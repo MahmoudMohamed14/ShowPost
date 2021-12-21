@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerView=findViewById(R.id.post_recycler_view);
         postAdapter=new PostAdapter();
+        getWindow().setStatusBarColor(getColor(R.color.white));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

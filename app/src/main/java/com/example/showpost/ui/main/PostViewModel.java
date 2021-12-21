@@ -12,27 +12,26 @@ import com.example.showpost.model.PostModel;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
+
+
+
+
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Response;
 
 public class PostViewModel extends androidx.lifecycle.ViewModel {
-    MutableLiveData<List<PostModel>> mutableLiveData=new MutableLiveData();
-public void  getPosts(){
-    PostClient.getInstance().getPosts().enqueue(new Callback<List<PostModel>>() {
-        @Override
-        public void onResponse(Call<List<PostModel>> call, Response<List<PostModel>> response) {
-            mutableLiveData.setValue(response.body());
-            Log.d("mohamed","mahmoud");
-        }
+    MutableLiveData<List<PostModel>> mutableLiveData = new MutableLiveData();
 
-        @Override
-        public void onFailure(Call<List<PostModel>> call, Throwable t) {
-            Log.d("erroe_her",t.getMessage());
+    public void getPosts() {
+       Observable<List<PostModel>> observable;
+        observable = PostClient.getInstance().getPosts().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        observable.subscribe(o->mutableLiveData.setValue(o));
 
-
-        }
-    });
-}
-
+    }
 }
